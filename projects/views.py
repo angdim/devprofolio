@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListAPIView, ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -10,12 +10,12 @@ from projects.serializers import ProjectSerializer
 
 
 class ProjectList(ListAPIView):
+    # permission_classes=(permissions.AllowAny)
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
 
-class ProjectDetail(RetrieveUpdateDestroyAPIView):
-    queryset = Project.objects.all()
+class ProjectDetails(RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly)
+    queryset = Project.objects.get_queryset()
     serializer_class = ProjectSerializer
-
-
